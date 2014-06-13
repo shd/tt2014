@@ -1,0 +1,94 @@
+\section{О классе функций, определимых в просто типизированном лямбда-исчислении}
+
+\begin{definition}
+Назовем расширенным полиномом функцию 
+\end{definition}
+
+\begin{lemma}
+Если в выражении $X^\xi$, находящемся в нормальной форме,
+подтерм $T^\tau$ не является свободной переменной выражения
+$T$, и $T \ne X$, то всегда найдется такой подтерм $S^\sigma$, что 
+$h(\sigma) > h(\tau)$, причем $\sigma=\tau\rightarrow\rho$ или
+$\sigma=\rho\rightarrow\tau$.
+\end{lemma}
+
+\begin{proof}
+Рассмотрим подтерм $T$. Возможны следующие варианты:
+
+\begin{enumerate}
+\item $T$ --- это некоторая переменная $x$ (она обязана быть связанной по условию леммы).
+То есть $T$ --- часть выражения $S = \lambda x:\tau. \dots x \dots$. 
+Тогда $S: \tau\rightarrow\rho$, и $h(\tau\rightarrow\rho) > h(\tau)$.
+\item $T$ --- это некоторая абстракция $T=\lambda x:\sigma.P^\pi$. 
+Тогда заметим, что по условию $T \ne X$. Значит, $T$ входит в некоторое более
+общее выражение --- либо в абстракцию
+$S^{\upsilon\rightarrow\tau} = \lambda y:\upsilon.T$, либо
+в применение $S^{\tau\rightarrow\upsilon} T$
+(применение вида $T A$ является редексом и потому невозможно).
+\item $T$ --- это некоторое применение $T=S^\upsilon\rightarrow\tau Y$.
+\end{enumerate}
+
+\end{proof}
+
+\begin{theorem}
+При фиксированном типе для целых чисел 
+$\nu=(\alpha\rightarrow\alpha)\rightarrow(\alpha\rightarrow\alpha)$
+в типизированном исчислении по Чёрчу класс двуместных функций ограничен 
+расширенными полиномами.
+\end{theorem}
+
+\begin{proof}
+Рассмотрим некоторый лямбда-терм 
+$R a^\nu b^\nu f^{\alpha\rightarrow\alpha}: \alpha\rightarrow\alpha$, 
+здесь $a$ и $b$ --- переменные, содержащие чёрчевские нумералы (аргументы функции), 
+$f$ --- первый аргумент чёрчевского нумерала.
+
+Согласно свойству слабой нормализации, данный терм имеет нормальную форму $N$. 
+Рассмотрим ее. Заметим, что если $T^\tau$ --- подтерм $N$, то он обязан соответствовать
+одному из следующих вариантов:
+
+\begin{tabular}{ll}
+Тип & Возможный вид терма\\
+\hline
+$\nu$ & $a$, $b$\\
+$\alpha\rightarrow\alpha$ & f, $a S_1^{\alpha\rightarrow\alpha}$, $b S_1^{\alpha\rightarrow\alpha}$,
+	 $\lambda x:\alpha.S_1^{\alpha\rightarrow\alpha} (S_2^{\alpha\rightarrow\alpha} \dots S_n^{\alpha\rightarrow\alpha} (y) \dots)$\\
+$\alpha$ & $f$, связанная переменная $y:\alpha$, $S_1^{\alpha\rightarrow\alpha} (T^\alpha)$
+\end{tabular}
+
+Доказать это можно разбором случаев с использованием индукции и предыдущей леммы,
+для примера разберем случай $h(\tau) \ge 2$.
+
+\begin{itemize}
+\item Если $h(\tau) \ge 3$, то $T=a$ или $T=b$. 
+Пусть это не так, и существуют такие $P^\pi$, что $P\ne a$, $P\ne b$ и $h(\pi) \ge 3$.
+Возьмем среди таких $P$ подтерм с типом максимальной глубины.
+Однако, по лемме в нем неизбежно
+найдется такой $S^\sigma$, что $h(\sigma)>h(\pi)$, что противоречит максимальности $h(\pi)$.
+
+\item Если $h(\tau) = 2$, то $\tau$ имеет вид либо $\alpha\rightarrow(\alpha\rightarrow\alpha)$,
+либо $(\alpha\rightarrow\alpha)\rightarrow\alpha$. По лемме найдется такой
+$S^\sigma$, что $\sigma=\tau\rightarrow\rho$ или $\sigma=\rho\rightarrow\tau$.
+В любом из случаев не найдется такого $\rho$, что $\nu = \sigma$, то есть $S\ne a$ и
+$S\ne b$, что невозможно по предыдущему пункту.
+\end{itemize}
+
+Теперь рассмотрим весь терм $N$. Он имеет тип $\alpha\rightarrow\alpha$. 
+Введем обозначение $\overline{m}=\lambda f:\alpha\rightarrow\alpha.\lambda x:\alpha.f^m x$.
+Покажем по индукции, что $N[a:=\overline{m}, b :=\overline{n}]=_\beta \lambda fx.f^{\overline{E(m,n)}} x$.
+
+Т.о., в выражении возможны 3 только типа элементарных формул, типов $\alpha$, $\alpha\rightarrow\alpha$ и
+$(\alpha\rightarrow\alpha)\rightarrow(\alpha\rightarrow\alpha)$.
+
+Про вариант $(\alpha\rightarrow\alpha)\rightarrow(\alpha\rightarrow\alpha)$ мы уже разобрались, теперь
+рассмотрим $\alpha\rightarrow\alpha$.
+
+Это может быть либо $f$, либо $a S^{\alpha\rightarrow\alpha}$, либо $b S^{\alpha\rightarrow\alpha}$,
+либо их комбинация: 
+$\lambda x:\alpha.S_1^{\alpha\rightarrow\alpha}(S_2^{\alpha\rightarrow\alpha}\dots S_n^{\alpha\rightarrow\alpha}(z)))$,
+
+
+\end{proof}
+
+\subsection{Типизируемость}
+
