@@ -26,3 +26,68 @@
 по Карри.
 
 
+\subsection{Изоморфизм Карри-Ховарда}
+
+Теперь мы готовы показать, что просто типизированное лямбда-исчисление в некотором
+смысле изоморфно импликационному фрагменту интуиционистской логики.
+
+Заметим сперва, что $T$ содержит в точности те же формулы, что и введенный в предыдущем
+параграфе язык.
+                 
+\begin{theorem}(Об изоморфизме Карри-Ховарда)
+\begin{enumerate}
+\item Если $\Gamma \vdash_\textt{ч} M:\phi$, то $types(\Gamma) \vdash \phi$.
+\item Если $\Gamma \vdash \phi$, то найдется такой $M \in \Lambda_T$, что
+$\{x_\phi | \phi\in\Gamma\}\vdash_\textt{ч} M:\phi$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Доказательство обоих частей теоремы несложно, но мы приведем доказательство второй части
+из методических соображений.
+
+Покажем существование $M$ индукцией по структуре доказательства $\Gamma\vdash\phi$.
+Для этого рассмотрим заключительное правило и разберем случаи.
+
+\begin{itemize}
+\end{itemize}
+\end{proof}
+
+\section{Лямбда-исчисление по Карри}
+
+Существует второй вариант исчисления.
+Главное его отличие --- в отсутствии типов при указании переменных в лямбда-термах.
+Правила типизации:
+ 
+
+Принципиальных отличий нет, легко показать следующую теорему:
+\begin{theorem}
+Пусть отображение $Er: \Lambda_T \rightarrow \Lambda$ задано так:
+$Er(\lambda x:\sigma.A) = \lambda x.Er(A)$. Тогда (стирание):
+
+\begin{enumerate}
+\item Если $M\rightarrow_\beta N$, то $Er(M)\rightarrow_\beta Er(N)$
+\item Если $\Gamma\vdash_\texttt{ч} M:\alpha$, то $\Gamma\vdash_\texttt{к} Er(M):\alpha$.
+\end{enumerate}
+
+Поднятие:
+\begin{enumerate}
+\item Если $M\rightarrow_\beta N$, то для любого $M_T \in \Lambda_T$, такого, что $Er(M_T) = M$,
+найдется $N_T \in \Lambda_T$, такой, что $Er(N_T) = T$ и $M_T \rightarrow_\beta N_T$.
+\item Если $\Gamma\vdash_\texttt{к} M:\alpha$, то найдется такой $M_T\in\Lambda_T$, 
+что $Er(M_T)=M$ и $\Gamma\vdash_\texttt{ч} N:\alpha$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Упражнение.
+\end{proof}
+
+Также, легко доказать аналоги теорем Черча-Россера и теоремы о нормализации.
+
+Однако, несмотря на сходство, есть и отличие --- типизация по Карри несколько более
+широкая. А именно, если $\Gamma\vdash M:\sigma$ и $\Gamma\vdash M:\tau$, 
+то из этого не следует $\sigma=\tau$. Скажем, справедливо
+$\vdash_\texttt{к}\lambda x.x : \alpha\rightarrow\alpha$ и 
+$\vdash_\texttt{к}\lambda x.x : \beta\rightarrow\beta$.
+
