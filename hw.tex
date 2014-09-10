@@ -38,7 +38,7 @@
 
 Например:\\\chr{\textbackslash{}a.\textbackslash{}b.a b c (\textbackslash{}d.e \textbackslash{}f.g) h}\\
 должно превратиться в\\
-\chr{\textbackslash{}a.(\textbackslash{}b.((((a b) c) (\textbackslash{}d.(e (\textbackslash{}f.g)))) h)))}
+\chr{(\textbackslash{}a.(\textbackslash{}b.((((a b) c) (\textbackslash{}d.(e (\textbackslash{}f.g)))) h))))}
 
 \item В файле task2.in задано некоторое лямбда-выражение, требуется найти список свободных
 переменных в нем и напечатать в алфавитном порядке, по идентификатору на строке.
@@ -86,7 +86,8 @@
 Результат должен соответствовать следующей грамматике:
 
 \begin{bnf}\begin{eqnarray*}
-<\nt{Ответ}> & ::= & <\nt{Тип}> | \chr{Лямбда-выражение не имеет типа.} \\
+<\nt{Ответ}> & ::= & <\nt{Тип}> \chr{\textbackslash{}n} <\nt{Контекст}> | \chr{Лямбда-выражение не имеет типа.} \\
+<\nt{Контекст}> & ::= & \rep{<\nt{Переменная}> \chr{:} <\nt{Тип}> \chr{\textbackslash{}n}}{*} \\
 <\nt{Тип}> & ::= & <\nt{Терм}> | <\nt{Терм}> \chr{->} <\nt{Тип}>\\
 <\nt{Терм}> & ::= & <\nt{Перем}> | \chr{(} <\nt{Тип}> \chr{)}\\
 <\nt{Перем}> & ::= & (\chr{a}\dots\chr{z}) \rep{\chr{0}\dots\chr{9}}{*} \rep{\chr{\'}}{*}
