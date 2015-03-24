@@ -1,0 +1,121 @@
+\section{Сильная нормализация}
+
+\begin{definition}
+Будем называть терм $A$ \emph{сильно нормализуемым} если
+выполнено одно из следующих условий:
+\begin{itemize}
+\item $A$ в нормальной форме
+\item $A\rightarrow_\beta B$ влечёт сильную нормализуемость $B$
+\end{itemize}
+\end{definition}
+
+\begin{lemma}
+Пусть $A$ --- сильно нормализуемый терм, тогда любая цепочка редукций неизбежно 
+приводит к нормальной форме за конечное количество шагов.
+\end{lemma}
+
+\begin{proof}
+Рассмотрим множество $N_0$ --- множество всех термов в нормальной форме.
+Рассмотрим процесс его пополнения: $N_{n+1} = N_{n} \cup {A: \mbox{для всех} B A\rightarrow_\beta B \mbox{влечет} B \in N_{n}}$.
+Тогда $\cup N_i = N^*$ будет содержать все сильно нормализуемые термы (доказательство очевидно из определения).
+
+Пусть $С(A) = min {i : A \in N_i}$.
+Очевидно, что если $A \rightarrow_\beta B$, то $C(A) > C(B)$. Отсюда следует конечность любой цепочки редукций.
+\end{proof}
+
+\begin{definition}
+Множество $SN$ --- множество сильно нормализуемых термов
+\end{definition}
+
+Определим оценку для типов. Будем считать, что $\llbracket \sigma \rrbracket$ --- это все
+лямбда-выражения, которые могут иметь данный тип.
+
+Соответственно определим аналог для функций на оценках, $A \rightarrow B = \{ C : \forall P \in A (C P \in B) \}$,
+множество всех термов, которые из любого терма из $A$ делают терм из $B$. А именно:
+
+\begin{definition}
+Оценкой типа $\tau$ назовем:
+$$\llbracket \tau \rrbracket = \left\{\begin{array}{ll} SN,& \mbox{если $\tau$ --- атомарный тип}\\
+                                         \llbracket \sigma \rrbracket \rightarrow \llbracket \theta \rrbracket, &\mbox{если $\tau \equiv \sigma\rightarrow\theta$} 
+  \end{array}\right.$$
+\end{definition}
+
+\begin{definition}
+Будем называть множество $S$ \emph{насыщенным}, если одновременно выполнены следующие условия:
+\begin{enumerate}
+\item $S \subseteq SN$
+\item Если $n \ge 0$ и $\{M_1, \dots, M_n\} \subseteq SN$, то $x M_1 \dots M_n \in S$.
+\item Если $n \ge 1$, $\{M_1, \dots, M_n\} \subseteq SN$ и 
+$P [x := M_1] M_2 \dots M_n \in S$, то $(\lambda x.P) M_1 \dots M_n \in S$.
+\end{enumerate}
+\end{definition}
+
+\begin{lemma} $SN$ насыщено
+\end{lemma}
+\begin{proof} Проверим требования к насыщенному множеству.
+\begin{enumerate}
+\item $SN \subseteq SN$
+\item Пусть найдется бесконечная последовательность редукций 
+$x M_1 \dots M_n \bredmath x M'_1 \dots M'_n \bredmath x M''_1 \dots M''_n \dots$.
+Тогда найдется бесконечная последовательность редукций какого-то из его аргументов:
+$M_k \bredmath M'_k \bredmath M''_k \dots$. Значит, $M_k \notin SN$. Поэтому,
+если $M_k \in SN$ для всех $k$, то и $x M_1 \dots M_n \in SN$.
+\item Пусть $P [x := M_1] M_2 \dots M_n \in SN$. 
+Пусть существует бесконечная цепочка редукций формулы $(\lambda x.P) M_1 \dots M_n$. 
+В данной цепочке неизбежно должна быть произведена редукция подвыражения $(\lambda x.P') M_1'$
+(здесь $P \mbredmath P'$, $M_1 \mbredmath M_1'$). Это так, поскольку цепочки редукций 
+$M_1, \dots M_n$ имеют конечную длину по условию, также и редукция $P$ не может быть
+бесконечной (иначе мы могли бы производить эти редукции в исходной формуле).
+Но результат этой редукции может быть получен из исходного выражения --- после чего
+цепочка редукций будет иметь конечную длину по условию.
+\end{enumerate}
+\end{proof}
+
+\begin{lemma} Если $A,B$ насыщенны, то $A \rightarrow B$ насыщено \end{lemma}
+\begin{proof} Рассмотрим $x M_1 \dots M_n$, где $M_i \in SN$. И рассмотрим $(x M_1 \dots M_n) P$,
+где $P \in A$. Раз $A \subseteq SN$, то $P \in SN$.
+
+Теперь рассмотрим $P[x := Q] M_1 \dots M_n \in A\rightarrow B$. То есть,
+$(P[x := Q] M_1 \dots M_n) K \in B$. Тогда по определению, $(\lambda x.P) Q M_1 \dots M_n K \in B$
+\end{proof}
+
+\begin{lemma} Если $\sigma$ --- тип, то $\llbracket \sigma \rrbracket$ насыщено \end{lemma}
+\begin{proof} Упражнение.
+\end{proof}
+
+\begin{definition}
+\begin{itemize}
+\item Оценка --- отображение переменных на термы. 
+\item Оценка терма при оценке переменных: $\llbracket M \rrbracket_\rho = M[x_1 := \rho(x_1), \dots x_n := \rho(x_n)]$
+при $x_i \in FV(M)$.
+\item $\models M : \sigma$ --- $\llbracket M \rrbracket \in \sigma$.
+\item $\rho \models M : \sigma$ --- $\llbracket M \rrbracket_\rho \in \sigma$.
+\item $\rho \models \Gamma$ --- $\rho \models g_i : \gamma_i$ (переменные имеют надлежащие типы в данной оценке
+переменных)
+\item $\Gamma \models M : \sigma$ --- Если $\rho \models \Gamma$, то $\rho \models M : \sigma$
+\end{itemize}
+\end{definition}
+
+\begin{theorem}
+Так определенная оценка корректна: если $\Gamma\vdash M:\sigma$, то $\Gamma\models M:\sigma$.
+\end{theorem}
+\begin{proof}
+Рассмотрим индукцию по построению доказательства типизиации $M$.
+\begin{itemize}
+\item $\infer{\Gamma\vdash x:\sigma}{}$. Тогда $x:\sigma \in \Gamma$. Фиксируем 
+какую-нибудь оценку $\rho$. Тогда если $\rho\models\Gamma$, то обязательно
+$\llbracket x \rrbracket_\rho \in \sigma$. Но это и значит, что $\rho\models x:\sigma$.
+
+%\item $\infer{\Gamma}{}$
+\end{itemize}
+\end{proof}
+
+\begin{theorem}
+Любой просто типизированный терм сильно нормализуемый.
+\end{theorem}
+\begin{proof}
+Так как $\Gamma \vdash M : \sigma$, то $\Gamma \models M : \sigma$. Пусть $\rho(x)=x$. Тогда
+$\rho \models g_i : \gamma_i$ ($g_i \in \llbracket gamma_i \rrbracket$ по лемме и 
+определению насыщенного множества). Тогда $\rho \models \Gamma$. Тогда 
+$\rho \models M : \sigma$, то есть $\llbracket M \rrbracket_\rho \in \sigma \subseteq SN$.
+\end{proof}

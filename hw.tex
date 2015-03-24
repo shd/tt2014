@@ -130,14 +130,16 @@
 
 \begin{bnf}\begin{eqnarray*}
 <\nt{Выражение}> & ::= & \chr{let} <\nt{Переменная}> \chr{=} <\nt{Выражение}> \chr{in} <\nt{Выражение}>\\
+                 & | & <\nt{Абстракция}>\\
 <\nt{Абстракция}> & ::= & [<\nt{Применение}>] \chr{\textbackslash{}} <\nt{Переменная}> \chr{.} <\nt{Абстракция}> \\
                 & | & <\nt{Применение}> \\
 <\nt{Применение}> & ::= & <\nt{Применение}> <\nt{Терм}> | <\nt{Терм}> \\                         
-<\nt{Терм}> & ::= & \chr{(} <\nt{Абстракция}> \chr{)} | <\nt{Значение}> \\
-<\nt{Значение}> & ::= & (\chr{a}\dots\chr{z}) \rep{\chr{0}\dots\chr{9}}{*} \rep{\chr{\'}}{*}\\
+<\nt{Терм}> & ::= & \chr{(} <\nt{Выражение}> \chr{)} \\
+		& | & <\nt{Переменная}>\\
                 & | & \chr{F}|\chr{T}|\chr{If}|\chr{Y}|\chr{Plus}|\chr{Minus}|\chr{Eq}|\rep{\chr{0}\dots\chr{9}}{+}\\
-                & | & \chr{<}<\nt{Значение}>\chr{,}<\nt{Значение}>\chr{>} | \chr{PrL} | \chr{PrR}\\
-                & | & \chr{InL} | \chr{InR} | \chr{Case}
+                & | & \chr{<}<\nt{Выражение}>\chr{,}<\nt{Выражение}>\chr{>} | \chr{PrL} | \chr{PrR}\\
+                & | & \chr{InL} | \chr{InR} | \chr{Case}\\
+<\nt{Переменная}> & ::= & (\chr{a}\dots\chr{z}) \rep{\chr{0}\dots\chr{9}}{*} \rep{\chr{\'}}{*}
 \end{eqnarray*}\end{bnf}%
 Аналогично простым лямбда-выражениям, 
 если подряд указаны какие-либо идентификаторы или ключевые слова \chr{let} и \chr{in}, 
@@ -158,9 +160,9 @@
 \chr{Eq x y} & если $x$, $y$ --- не числа, то ошибка; если $x=y$, то \chr{T}, иначе \chr{F}\\
 \chr{Y f} & \chr{f (Y f)}\\
 \chr{PrL <a,b>} & \chr{a}\\
-\chr{PrL <a,b>} & \chr{b}\\
-\chr{Case (PrL x) l r} & \chr{l x}\\
-\chr{Case (PrR y) l r} & \chr{r y}
+\chr{PrR <a,b>} & \chr{b}\\
+\chr{Case (InL x) l r} & \chr{l x}\\
+\chr{Case (InR y) l r} & \chr{r y}
 \end{tabular}%
 
 Частичное применение переменных особого вида допускается (в этом случае имеет
@@ -200,18 +202,18 @@
 Имя & Тип\\
 \hline
 T,F & $Bool$\\
-If & $Bool \rightarrow a \rightarrow a \rightarrow a $\\
+If & $\forall a (Bool \rightarrow a \rightarrow a \rightarrow a) $\\
 $0,1,\dots,2^{63}-1$ & $Int$\\
 Plus & $Int \rightarrow Int \rightarrow Int$\\
 Minus & $Int \rightarrow Int \rightarrow Int$\\
 Eq & $Int \rightarrow Int \rightarrow Bool$\\
 $< x^a, y^b >$ & $a \& b$\\
-PrL & $a\&b \rightarrow a$\\
-PrR & $a\&b \rightarrow b$\\
-InL & $a \rightarrow a | b$\\
-InR & $a \rightarrow a | b$\\
-Case & $a | b \rightarrow (a\rightarrow c) \rightarrow (b\rightarrow c) \rightarrow c$\\
-Y & $(a \rightarrow a) \rightarrow a$
+PrL & $\forall a \forall b (a\&b \rightarrow a)$\\
+PrR & $\forall a \forall b (a\&b \rightarrow b)$\\
+InL & $\forall a \forall b (a \rightarrow a | b)$\\
+InR & $\forall b \forall b (b \rightarrow a | b)$\\
+Case & $\forall a \forall b \forall c (a | b \rightarrow (a\rightarrow c) \rightarrow (b\rightarrow c) \rightarrow c)$\\
+Y & $\forall a ((a \rightarrow a) \rightarrow a)$
 \end{tabular}%
 
 Убедитесь, что решения для примеров из предыдущей задачи правильно типизируются.
