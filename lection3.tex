@@ -6,7 +6,7 @@
 логики, содержащим только импликацию. Это исчисление генценовского типа.
 
 Формула --- либо маленькая буква греческого алфавита, либо выражение вида
-$phi \rightarrow psi$.
+$\phi \rightarrow \psi$, где $\phi$ и $\psi$ - формулы, либо выражение вида $(\phi)$, где $\phi$ - формула.
 
 Аксиомы и правила вывода:
 
@@ -175,10 +175,21 @@ $$\infer[\texttt{удаление} \rightarrow, \mathrm{M.P.}]{\Gamma\vdash\psi}
 Правила типизации:
  
 Принципиальных отличий нет, легко показать следующую теорему:
-\begin{theorem}
-Пусть отображение $Er: \Lambda_T \rightarrow \Lambda$ задано так:
-$Er(\lambda x:\sigma.A) = \lambda x.Er(A)$. Тогда (стирание):
 
+\begin{definition}[Стирание] Функцией стирания называется следующая функция: 
+	
+	$Er: \Lambda_T \rightarrow \Lambda$:
+	\[
+	Er (A) =
+	\begin{cases}
+	x                                   & A \equiv x \\
+	Er(M) \; Er(N) & A \equiv M \; N \\
+	\lambda x . Er(P)           & A \equiv \lambda \; x : \tau. \; P
+	\end{cases}
+	\]
+\end{definition}
+
+\begin{theorem} \
 \begin{enumerate}
 \item Если $M\rightarrow_\beta N$, то $Er(M)\rightarrow_\beta Er(N)$
 \item Если $\Gamma\vdash_\texttt{ч} M:\alpha$, то $\Gamma\vdash_\texttt{к} Er(M):\alpha$.
@@ -247,6 +258,5 @@ $$\infer{\Gamma\vdash\phi}{\Gamma\vdash\bot}$$
 $\alpha\vee\neg\alpha$, то есть $\alpha\vee(\alpha\rightarrow\bot)$. Можем ли мы утверждать, что
 данный тип всегда обитаем? Если так, то тогда всегда существует лямбда-терм $A: \alpha\vee(\alpha\rightarrow\bot)$.
 Однако, непонятно, как такое выражение доказать: функция $\alpha\rightarrow\bot$ в общем случае не 
-является обитаемой (она должна возвращать лямбда-выражение, которого нет в природе --- такое возможно только
-если ).
+является обитаемой (она должна возвращать лямбда-выражение, которого нет в природе --- такое возможно только если $\alpha = \bot$).
 
